@@ -1,26 +1,22 @@
 package com.example.activitytracker.Controller;
 
-import com.example.activitytracker.DTO.TaskDTO;
 import com.example.activitytracker.DTO.UserDTO;
+import com.example.activitytracker.Exception.TaskNotFoundException;
+import com.example.activitytracker.Model.Status;
 import com.example.activitytracker.Model.Task;
 import com.example.activitytracker.Model.User;
 import com.example.activitytracker.Service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 //@RequiredArgsConstructor
 @RequestMapping(value = "/user")
 public class UserController {
-
 
     private final UserService userService;
 
@@ -29,42 +25,32 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/dashboard")
-    public String index(Model model){
-        List<Task> allTasks = userService.viewAllTasks();
-        model.addAttribute("tasks" , allTasks);
-        return "dashboard";
-    }
-
     @GetMapping(value = "/login")
     public String displayLoginPage(Model model){
         model.addAttribute("userDetails" , new UserDTO());
-        return "login";
+        return "loginForm";
     }
 
     @PostMapping(value = "/loginUser")
-    public String loginUser(@RequestParam String email , @RequestParam String password , HttpSession session , Model model){
-       String message =  userService.loginUser(email ,  password);
+    public String loginUser(@ModelAttribute("userDetails") UserDTO userDTO, HttpSession session , Model model){
+        String message =  userService.loginUser(userDTO.getEmail(), userDTO.getPassword());
+        User user = userService.getUserByEmail(userDTO.getEmail());
 
-       if(message.equals("Success")){
-           User user = userService.getUserByEmail(email);
-           session.setAttribute("email" , user.getEmail());
-           session.setAttribute("id" , user.getId());
-           session.setAttribute("name" , user.getName());
-           return "redirect:/dashboard";
-       }else{
-           model.addAttribute("errorMessage" , message);
-           return  "redirect:/login";
-       }
-
-
-
+        if(message.equals("Success")){
+            session.setAttribute("loggedInUser" , user);
+            session.setAttribute("id" , user.getId());
+            session.setAttribute("name" , user.getName());
+            return "redirect:/user/dashboard";
+        }else{
+            model.addAttribute("errorMessage" , message);
+            return  "redirect:/user/login";
+        }
     }
 
     @GetMapping(value = "/register")
     public  String showRegistrationForm(Model model){
         model.addAttribute("userRegistrationDetails" , new UserDTO());
-        return  "register";
+        return "registerForm";
     }
 
     @PostMapping(value = "/userRegistration")
@@ -73,49 +59,96 @@ public class UserController {
         User registeredUser = userService.registerUser(userDTO);
         if (registeredUser != null){
 
-            return "redirect:/login";
+            return "redirect:/user/login";
         }else {
-            return "redirect:/register";
+            return "redirect:/user/register";
         }
     }
 
-    @GetMapping(value = "/task/{status}")
-    public String taskByStatus(@PathVariable(name = "status") String status , Model model){
-        List<Task> listOfTaskByStatus = userService.viewAllTaskByStatus(status);
-        model.addAttribute("tasksByStatus" , listOfTaskByStatus);
-        return "task-by-status";
+    @GetMapping("/dashboard")
+    public String index(Model model, HttpSession session){
+     User user = (User) session.getAttribute("loggedInUser");
+     List<Task> allTasks = userService.viewAllTasks();
+      model.addAttribute("tasks" , allTasks);
+      model.addAttribute("user" , user);
+        return "dashboard";
     }
 
-    @PostMapping("/delete/{id}")
+
+    @GetMapping(value = "/task/pending")
+    public String taskByPendingStatus(Model model, HttpSession session){
+        User user = (User) session.getAttribute("loggedInUser");
+        List<Task> listOfTaskByStatus = userService.viewAllTaskByStatus(String.valueOf(Status.PENDING), user.getId());
+        model.addAttribute("tasks" , listOfTaskByStatus);
+        return "dashboard";
+    }
+
+    @GetMapping(value = "/task/ongoing")
+    public String taskByOnGoingStatus(Model model, HttpSession session){
+        User user = (User) session.getAttribute("loggedInUser");
+        List<Task> listOfTaskByStatus = userService.viewAllTaskByStatus(String.valueOf(Status.IN_PROGRESS), user.getId());
+        model.addAttribute("tasks" , listOfTaskByStatus);
+        return "dashboard";
+    }
+
+    @GetMapping(value = "/task/completed")
+    public String taskByCompletedStatus(Model model, HttpSession session){
+        User user = (User) session.getAttribute("loggedInUser");
+        List<Task> listOfTaskByStatus = userService.viewAllTaskByStatus(String.valueOf(Status.DONE), user.getId());
+        model.addAttribute("tasks" , listOfTaskByStatus);
+        return "dashboard";
+    }
+
+    @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable(name = "id") Integer id){
         userService.deleteById(id);
-        return "redirect:/dashboard";
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping(value = "/editPage/{id}")
     public String showEditPage(@PathVariable(name = "id") Integer id , Model model){
         Task task = userService.getTaskById(id);
         model.addAttribute("singleTask" , task);
-        model.addAttribute("taskBody", new TaskDTO());
-        return  "editTask";
+        model.addAttribute("taskBody", new Task());
+        return "editPage";
     }
 
     @PostMapping(value = "/edit/{id}")
-    public String editTask(@PathVariable( name = "id") Integer id , @ModelAttribute TaskDTO taskDTO){
-        userService.updateTitleAndDescription(taskDTO , id);
-        return "redirect:/dashboard";
+    public String editTask(@PathVariable( name = "id") Integer id, @ModelAttribute Task task){
+        userService.updateTask(task, id);
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping(value = "/addNewTask")
     public String addTask(Model model){
-        model.addAttribute("newTask" , new TaskDTO());
-        return "addTask";
+        model.addAttribute("newTask" , new Task());
+        return "createTaskForm";
     }
 
     @PostMapping(value = "/addTask")
-    public String CreateTask(@ModelAttribute TaskDTO taskDTO){
-        userService.createTask(taskDTO);
-        return "redirect:/dashboard";
+    public String createNewTask(@ModelAttribute("newTask") Task task, HttpSession session){
+        User user = (User) session.getAttribute("loggedInUser");
+        task.setUser(user);
+        userService.createNewTask(task, user.getId());
+        return "redirect:/user/dashboard";
     }
 
+    @GetMapping(value = "/start/{id}")
+    public String updateTaskStatus(@PathVariable(name="id") Integer id,
+                                HttpSession session){
+        User user = (User) session.getAttribute("loggedInUser");
+        Task task = userService.getTaskById(id);
+//        if(task == null){
+//            throw new TaskNotFoundException("task not found");
+//        }
+//        if(!Objects.equals(task.getUser().getId(), user.getId())){
+//            throw new TaskNotFoundException("unauthorized");
+//        }
+//        if (Objects.equals(task.getStatus(), Status.DONE.name())){
+//            throw new TaskNotFoundException("cannot edit done task");
+//        }
+        task.setStatus(String.valueOf(Status.IN_PROGRESS));
+        userService.updateTaskByStatus(task);
+        return "redirect:/user/dashboard";
+    }
 }

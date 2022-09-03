@@ -1,0 +1,272 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 100%;
+
+}
+
+/* ............................ 
+        NAVIGATION
+...............................*/
+.navbar {
+    background-color: #acb8ff;
+    height: 70px;
+    margin-bottom: 40px;
+}
+
+ul.navbar-nav>li>a {
+    margin-left: 80px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+a.navbar-brand {
+    color: #fff;
+    font-weight: bolder;
+    font-size: 35px;
+    letter-spacing: 2px;
+}
+
+a.dropdown-toggle {
+    color: #fff;
+}
+
+.dropdown-menu a {
+    font-size: 12px;
+}
+
+.dropdown-menu a:hover {
+    color: #515da1;
+}
+
+/* ............................ 
+        REGISTER SECTION
+...............................*/
+
+.info-wrapper {
+    /* padding: 100px 0 50px 0; */
+}
+
+.info-wrapper p {
+    font-size: 19px;
+    color: #878a8d;
+    line-height: 38px;
+}
+
+#register-form-card .card {
+    background-color: #acb8ff;
+    padding: 25px 0;
+}
+
+#register-form-card .card-title {
+    color: #fff;
+    font-size: 19px;
+    padding: 20px 0;
+}
+
+#register-form-card .form-group .form-control {
+    font-size: 12px;
+}
+
+/* ............................ 
+        BUTTON(generic)
+...............................*/
+.btn-general {
+    border-radius: 0;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
+.btn-primary-register {
+    background-color: #515da1;
+    width: 120px;
+    height: 42px;
+    border-radius: 21px;
+    color: #fff
+}
+
+.btn-primary-register:hover,
+.btn-primary-register:focus {
+    color: #fff;
+    box-shadow: 0px 3px 13px 0px rgba(0, 0, 0, 0.34);
+
+}
+
+.btn-register {
+    background-color: #515da1;
+}
+
+.btn-register:hover,
+.btn-register:hover {
+    box-shadow: 0px 3px 13px 0px rgba(0, 0, 0, 0.34);
+
+}
+
+a.btn-edit {
+    color: #fff;
+    background-color: #515da1;
+    text-transform: capitalize;
+    margin-right: 20px;
+}
+
+a.btn-edit:hover,
+a.btn-delete:hover {
+    box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.3);
+
+}
+
+a.btn-delete {
+    background-color: #db7171;
+    text-transform: capitalize;
+    color: #fff;
+
+}
+
+.btn-create,
+.btn-cancel,
+.btn-delete,
+.btn-edit {
+    padding: 8px 26px;
+    font-size: 12px;
+
+}
+
+.btn {
+    -webkit-transition-duration: 0.35s;
+    transition-duration: 0.35s;
+}
+
+.btn-cancel {
+    background-color: #db7171;
+    text-transform: capitalize;
+    margin-right: 20px;
+}
+
+.btn-create {
+    background-color: #515da1;
+    text-transform: capitalize;
+}
+
+.btn-cancel:hover,
+.btn-create:hover {
+    box-shadow: 0px 2px 9px 0px rgba(0, 0, 0, 0.3);
+    transform: translate(0px, -5px);
+
+}
+
+/* ............................ 
+        FOOTER
+...............................*/
+footer {
+    width: 100%;
+    height: 50px;
+    background-color: #acb8ff;
+}
+
+h4.footer-text {
+    float: left;
+    padding: 16px 0;
+    font-size: 12px;
+}
+
+footer p {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.img-content-wrapper {
+    background: #acb8ff;
+    border-radius: 180px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    display: block;
+}
+
+.img-content-wrapper img {
+    width: 50px;
+}
+
+/* ............................ 
+        DASHBOARD
+...............................*/
+h4.dashboard-title {
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+    padding: 20px 0;
+    cursor: pointer;
+}
+
+.dashboard-title a {
+    text-decoration: none;
+    color: #2b2b2b;
+}
+
+.dashboard-title a:hover {
+    color: #515da1;
+}
+
+.img-content-wrapper {
+    margin: 0 -200px 0 auto;
+}
+
+.task-link {
+    background-color: #e6e8eb;
+    padding: 15px 10px 15px 0;
+    display: inline-block;
+    margin-right: 20px;
+    color: #2b2b2b;
+    text-decoration: none;
+    font-weight: 600;
+    width: 700px;
+    margin-top: 20px;
+}
+
+.task-link a {
+    padding-left: 30px;
+    text-decoration: none;
+    color: #2c2c2c;
+}
+
+.task-link a:hover {
+    color: #515da1;
+
+}
+
+.task-link:hover {
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.27);
+    cursor: pointer;
+}
+
+
+/* ............................ 
+        TODOS
+...............................*/
+#add-todo {
+    margin: 100px auto 0 auto;
+    width: 500px;
+}
+
+#todo .img-content-wrapper {
+    margin: 0 auto 0 auto;
+
+}
+
+#action-buttons a {
+    text-decoration: none;
+    color: #fff;
+}
+
+#add-todo .form-control {
+    font-size: 12px;
+}

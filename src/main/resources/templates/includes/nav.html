@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<nav th:fragment="nav-bar" class="navbar navbar-expand-lg">
+    <div class="container">
+        <a href="#" class="navbar-brand">Activity Tracker</a>
+        <div class="collapse navbar-collapse" id="todolist-menu">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/user/login}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-sm btn-primary-register" th:href="@{/user/register}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</html>

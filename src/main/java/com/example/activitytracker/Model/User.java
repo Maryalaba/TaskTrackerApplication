@@ -20,11 +20,10 @@ public class User {
 
     private String name;
 
-    @Column(unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     private String password;
-
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;

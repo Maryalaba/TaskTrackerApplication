@@ -3,11 +3,14 @@ package com.example.activitytracker.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -23,22 +26,20 @@ public class Task {
     private String title;
     private String description;
 
-
-    @Column(columnDefinition = "varchar(255) default 'pending'")
+//    @Enumerated(EnumType.STRING)
     private String status;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @UpdateTimestamp
-    private  LocalDateTime updatedAt;
+    private  Date updatedAt;
 
-    @Column(nullable = true)
-    private LocalDateTime completedAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dueDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id" , referencedColumnName = "id")
     private User user;
-
 
 }

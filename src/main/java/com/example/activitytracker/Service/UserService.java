@@ -2,9 +2,9 @@ package com.example.activitytracker.Service;
 
 import com.example.activitytracker.DTO.TaskDTO;
 import com.example.activitytracker.DTO.UserDTO;
+import com.example.activitytracker.Model.Status;
 import com.example.activitytracker.Model.Task;
 import com.example.activitytracker.Model.User;
-
 import java.util.List;
 
 public interface UserService {
@@ -13,19 +13,20 @@ public interface UserService {
 
     String loginUser(String email, String password);
 
-    Task createTask(TaskDTO taskDTO);
+    Task createNewTask(Task task, int userId);
 
-    Task updateTitleAndDescription(TaskDTO taskDTO , int id);
+    Task updateTask(Task task , int id);
 
     Task getTaskById(int id);
 
     List<Task> viewAllTasks();
 
-    boolean updateTaskStatus(String status, int id);
+    boolean updateTaskByStatus(Task task);
 
-    List<Task> viewAllTaskByStatus(String status);
+    List<Task> viewAllTaskByStatus(String status, int userId);
 
     boolean deleteById(int id);
+
     User getUserByEmail(String email);
 
 }

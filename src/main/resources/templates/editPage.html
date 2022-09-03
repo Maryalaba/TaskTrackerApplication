@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:insert="includes/header">
+
+  <title>Todolist</title>
+</head>
+
+<body>
+<!-- Navigation -->
+<nav th:fragment="nav-bar" class="navbar navbar-expand-lg">
+  <div class="container">
+    <a href="#" class="navbar-brand">Activity Tracker</a>
+    <div class="collapse navbar-collapse" id="todolist-menu">
+    </div>
+  </div>
+</nav>
+
+<!-- Dashboard -->
+<div id="todo" class="py-5">
+  <div class="container">
+    <div class="img-content-wrapper">
+      <img src="img/img-holder.png" class="img-fluid rounded" alt="">
+      <h4 class="dashboard-title">
+        <a href="#">Edit To Do</a> </h4>
+    </div>
+
+    <!-- Create todo project -->
+    <div id="add-todo">
+      <form th:action="@{/user/edit/{id} (id = ${singleTask.id})}" method="post" th:object="${taskBody}">
+
+        <div class="form-group">
+          <input type="text" th:value="${singleTask.title}" name="title" class="form-control" placeholder="Title">
+        </div>
+        <div class="form-group">
+          <textarea rows="3" th:text="${singleTask.description}" name="description" class="form-control" placeholder="Description..."></textarea>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-12">
+            <input class="form-control"  name="dueDate" th:value="${singleTask.dueDate}" type="date" placeholder="Due date" id="completedAt">
+          </div>
+        </div>
+        <div id="action-buttons" class="text-center">
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="my-3">
+  <div class="footer-bottom">
+    <div class="container">
+      <p class="text-white">Copyright &copy;2022. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+<!-- jquery -->
+<div th:replace="includes/footer"></div>
+</body>
+
+</html>
